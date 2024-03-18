@@ -23,5 +23,32 @@ fd.createReadStream()
         }
     })
     .on('end', () => {
-        console.log('End of reading...')
+        console.log('End of reading - Planets Data...')
     })
+
+
+export const loadPlanetsData = () => {
+    /*
+    * эта функция -- просто пример.
+    * начиная с 15й версии NodeJs появились
+    * асинхронные fs функции, которые автоматически
+    * преобразуют все операции в Promise
+    * */
+    return new Promise((resolve, reject) => {
+        fd.createReadStream()
+            .pipe(parse({
+                comment: '#',
+                columns: true
+            }))
+            .on('data', (data) => {
+                if (habitablePlanets(data)) {
+                    result.push(data)
+                }
+            })
+            .on('error', (err) => reject(err))
+            .on('end', () => {
+                console.log('End of reading...')
+                resolve()
+            })
+    })
+}
