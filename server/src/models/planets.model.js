@@ -22,6 +22,9 @@ fd.createReadStream()
             result.push(data)
         }
     })
+    .on('error', (err) => {
+        console.log(err)
+    })
     .on('end', () => {
         console.log('End of reading - Planets Data...')
     })
