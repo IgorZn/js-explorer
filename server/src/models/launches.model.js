@@ -1,4 +1,5 @@
 const launches = new Map()
+let latestFlightNumber = 100
 
 const launch = {
     flightNumber: 100,
@@ -13,6 +14,16 @@ const launch = {
 
 launches.set(launch.flightNumber, launch)
 
+export const addNewLaunch = (launch) => {
+    latestFlightNumber++
+    launches.set(launch.flightNumber, Object.assign(launch, {
+        customer: ['Zero to Mastery', 'SASA'],
+        upcoming: true,
+        success: true,
+        flightNumber: latestFlightNumber
+    }))
+}
+
 export const getAllLaunches = () => {
-  return Array.from(launches.values())
+    return Array.from(launches.values())
 }
