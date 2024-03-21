@@ -1,4 +1,4 @@
-export const launches = new Map()
+const launches = new Map()
 
 const launch = {
     flightNumber: 100,
@@ -12,3 +12,7 @@ const launch = {
 }
 
 launches.set(launch.flightNumber, launch)
+
+export const getAllLaunches = () => {
+  return Array.from(launches.values())
+}

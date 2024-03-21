@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "npm run watch --prefix server",
-    "client": "npm run start:client --prefix client",
+    "server:root": "npm run watch --prefix server",
+    "client:root": "npm run start:client --prefix client",
     "start": "npm run server & npm run client"
   },
   "keywords": [],

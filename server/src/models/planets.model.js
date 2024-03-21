@@ -1,7 +1,7 @@
 import * as fs from 'node:fs/promises';
 import {parse} from "csv-parse";
 
-export const result = []
+const result = []
 
 const habitablePlanets = (planet) => {
     return planet['koi_disposition'] === 'CONFIRMED'
@@ -54,4 +54,8 @@ export const loadPlanetsData = () => {
                 resolve()
             })
     })
+}
+
+export const getAllPlanets = () => {
+  return result
 }
