@@ -4,8 +4,8 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "nodemon src/server.js",
+    "server:tests": "npx playwright test --project=api-tests",
     "start:server": "node src/server.js"
   },
   "keywords": [],
@@ -18,10 +18,13 @@
     "ajv-keywords": "^5.1.0",
     "cors": "^2.8.5",
     "csv-parse": "^5.5.5",
+    "dotenv": "^16.4.5",
     "express": "^4.18.3",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.42.1",
+    "@types/node": "^20.11.30",
     "nodemon": "^3.1.0"
   }
 }
