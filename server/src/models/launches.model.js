@@ -24,6 +24,25 @@ export const addNewLaunch = (launch) => {
     }))
 }
 
+export const deleteLaunch = (id) => {
+    return launches.delete(id)
+}
+
+export const existById = (id) => {
+    return launches.has(id)
+}
+
+export const abortLaunchById = (id) => {
+    const launch = launches.get(id)
+    if(launch) {
+        launch.upcoming = false;
+        launch.success = false;
+        return launch
+    }
+    return false
+
+}
+
 export const getAllLaunches = () => {
     return Array.from(launches.values())
 }

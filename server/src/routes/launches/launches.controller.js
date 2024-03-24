@@ -1,4 +1,4 @@
-import {addNewLaunch, getAllLaunches} from "../../models/launches.model.js";
+import {abortLaunchById, addNewLaunch, deleteLaunch, existById, getAllLaunches} from "../../models/launches.model.js";
 import { validate, ajv } from "../../schemas/launches.schema.js";
 
 export const httpGetAllLaunches = (req, res) => {
@@ -16,4 +16,14 @@ export const httpAddNewLaunches = (req, res) => {
     addNewLaunch(body)
     const allLaunches = getAllLaunches()
     return res.status(202).json({status: true, count: allLaunches.length, launch: body})
+}
+
+export const httpAbortLaunch = (req, res) => {
+    const id = +req.params.id
+    if(existById(id)){
+        const abortedLaunch = abortLaunchById(id)
+        return res.status(200).json({status: true, launch: abortedLaunch})
+    }
+    return res.status(400).json({status: false, error: "Launch not found"})
+
 }
