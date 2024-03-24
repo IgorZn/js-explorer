@@ -19,7 +19,7 @@ app.use(cors({ origin: 'http://localhost:3000' }))
 
 // Routers
 app.use(planetsRouter)
-app.use(launchesRoute)
+app.use('/launches',launchesRoute)
 
 // Static
 app.use(express.static(path.join(__dirname, '..', 'public')))
