@@ -1,12 +1,16 @@
 // @ts-check
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig } from '@playwright/test';
 import dotenv from "dotenv"
 
-const pathsEnv = {
+export const pathsEnv = {
   local: '.env.local',
   dev: '.env'
 }
 const path = process.env.CI ? pathsEnv.dev : pathsEnv.local
+
+export const getEnvPath = (pathsEnv) => {
+  return process.env.CI ? pathsEnv.dev : pathsEnv.local
+}
 dotenv.config({path})
 
 const BASE_URL = process.env.CI ? process.env.BASE_URL : process.env.LOCAL_URL

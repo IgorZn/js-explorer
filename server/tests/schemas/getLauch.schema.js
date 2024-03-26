@@ -6,7 +6,7 @@ export const ajv = new Ajv({strictTypes: true})
 ajvKeywords(ajv)
 addFormats(ajv)
 
-const getLaunchesSchema = {
+export const launchesSchema = {
     type: "object",
     properties: {
         flightNumber: {type: "number"},
@@ -21,5 +21,6 @@ const getLaunchesSchema = {
     allRequired: true,
 }
 
-export const validateGetLaunches = ajv.compile(getLaunchesSchema)
+export const validateGetLaunches = ajv.compile(launchesSchema)
+export const validateLaunches = ajv.compile(launchesSchema)
 
