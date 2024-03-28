@@ -1,5 +1,6 @@
 import * as fs from 'node:fs/promises';
 import {parse} from "csv-parse";
+import PlanetModel from "../schemas/planets.mongo.js";
 
 const result = []
 
@@ -17,18 +18,26 @@ fd.createReadStream()
         comment: '#',
         columns: true
     }))
-    .on('data', (data) => {
+    .on('data', async (data) => {
         if (habitablePlanets(data)) {
-            result.push(data)
+            await savePlaten(data)
+                .catch(e => console.log(`Error while loading planets data: ${e}`))
         }
     })
     .on('error', (err) => {
         console.log(err)
     })
-    .on('end', () => {
+    .on('end', async () => {
+        const countPlanetsFound = await getAllPlanets()
         console.log('End of reading - Planets Data...')
+        console.log('Total habitable planets: ' + countPlanetsFound.length)
     })
 
+const savePlaten = async (data) => {
+    const filter = {keplerName: data.kepler_name}
+    const update = {keplerName: data.kepler_name}
+    return  PlanetModel.findOneAndUpdate(filter, update, {new: true, upsert: true})
+}
 
 export const loadPlanetsData = () => {
     /*
@@ -56,6 +65,6 @@ export const loadPlanetsData = () => {
     })
 }
 
-export const getAllPlanets = () => {
-  return result
+export const getAllPlanets = async () => {
+    return PlanetModel.find({});
 }
