@@ -1,11 +1,18 @@
-import {abortLaunchById, addNewLaunch, deleteLaunch, existById, getAllLaunches} from "../../models/launches.model.js";
+import {
+    abortLaunchById,
+    addNewLaunch,
+    deleteLaunch,
+    existById,
+    getAllLaunches,
+    saveLaunch
+} from "../../models/launches.model.js";
 import { validate, ajv } from "../../schemas/launches.schema.js";
 
-export const httpGetAllLaunches = (req, res) => {
-    return res.status(200).json(getAllLaunches())
+export const httpGetAllLaunches = async (req, res) => {
+    return res.status(200).json(await getAllLaunches())
 }
 
-export const httpAddNewLaunches = (req, res) => {
+export const httpAddNewLaunches = async (req, res) => {
     const { body } = req
     const isValidated = validate(body)
     if (!isValidated) {
@@ -13,8 +20,9 @@ export const httpAddNewLaunches = (req, res) => {
     }
 
     body.launchDate = new Date(body.launchDate)
-    addNewLaunch(body)
-    const allLaunches = getAllLaunches()
+    // addNewLaunch(body)
+    await saveLaunch(body)
+    const allLaunches = await getAllLaunches()
     return res.status(202).json({status: true, count: allLaunches.length, launch: body})
 }
 

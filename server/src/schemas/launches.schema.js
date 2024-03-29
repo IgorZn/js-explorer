@@ -18,7 +18,7 @@ const launchesSchema = {
         target: {type: "string"}
     },
     allRequired: true,
-    additionalProperties: false,
+    additionalProperties: true,
 }
 
 export const validate = ajv.compile(launchesSchema)

@@ -7,11 +7,11 @@ const launchesSchema = new mongoose.Schema({
         default: 100
     },
     mission: {
-        type:String,
+        type: String,
         required: true
     },
     rocket: {
-        type:String,
+        type: String,
         required: true
     },
     launchDate: {
@@ -19,8 +19,7 @@ const launchesSchema = new mongoose.Schema({
         required: true
     },
     target: {
-        ref: 'Planet',
-        type: mongoose.ObjectId,
+        type: String,
         required: true
     },
     customer: [],
@@ -34,5 +33,10 @@ const launchesSchema = new mongoose.Schema({
         default: true
     },
 })
+
+launchesSchema.pre('updateOne', async function (next) {
+    console.log('before next');
+    console.log('after next');
+});
 
 export const LaunchModel = mongoose.model('Launch', launchesSchema)

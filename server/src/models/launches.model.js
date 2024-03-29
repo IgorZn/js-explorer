@@ -1,3 +1,6 @@
+import {LaunchModel} from "../schemas/launches.mongo.js";
+import PlanetModel from "../schemas/planets.mongo.js";
+
 const launches = new Map()
 let latestFlightNumber = 100
 
@@ -24,6 +27,24 @@ export const addNewLaunch = (launch) => {
     }))
 }
 
+export const saveLaunch = async (launch) => {
+    const flightNumber = await LaunchModel.findOne().sort({flightNumber: -1}).exec()
+    launch.flightNumber = ++flightNumber.flightNumber
+
+    const planet = await PlanetModel.findOne({
+        keplerName: launch.target
+    },)
+
+    if(!planet){
+        throw new Error('No matching planet found')
+    }
+
+    return LaunchModel.updateOne({
+        flightNumber: launch.flightNumber
+    }, launch, {upsert: true, '__v': 0})
+
+}
+
 export const deleteLaunch = (id) => {
     return launches.delete(id)
 }
@@ -43,6 +64,6 @@ export const abortLaunchById = (id) => {
 
 }
 
-export const getAllLaunches = () => {
-    return Array.from(launches.values())
+export const getAllLaunches = async () => {
+    return LaunchModel.find({}, {'__v': 0})
 }

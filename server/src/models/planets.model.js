@@ -66,5 +66,5 @@ export const loadPlanetsData = () => {
 }
 
 export const getAllPlanets = async () => {
-    return PlanetModel.find({});
+    return PlanetModel.find({}, {'__v':0});
 }
