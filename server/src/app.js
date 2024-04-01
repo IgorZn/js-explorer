@@ -1,11 +1,10 @@
 import * as path from "path";
 import { fileURLToPath } from 'node:url';
 
-import express from "express"
+import express from "express";
 import cors from "cors"
 import morgan from "morgan";
-import planetsRouter from "./routes/planets/planets.router.js";
-import launchesRoute from "./routes/launches/launches.route.js";
+import {v1api} from "./routes/api.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -18,8 +17,7 @@ app.use(express.json())
 app.use(cors({ origin: 'http://localhost:3000' }))
 
 // Routers
-app.use(planetsRouter)
-app.use('/launches',launchesRoute)
+app.use('/v1', v1api)
 
 // Static
 app.use(express.static(path.join(__dirname, '..', 'public')))
