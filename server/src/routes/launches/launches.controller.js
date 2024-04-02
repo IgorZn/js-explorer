@@ -18,7 +18,6 @@ export const httpAddNewLaunches = async (req, res) => {
     }
 
     body.launchDate = new Date(body.launchDate)
-    // addNewLaunch(body)
     await saveLaunch(body)
     const allLaunches = await getAllLaunches()
     return res.status(202).json({status: true, count: allLaunches.length, launch: body})

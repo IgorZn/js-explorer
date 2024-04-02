@@ -3,9 +3,10 @@ import app from "./app.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv"
 import {getEnvPath, pathsEnv} from "../playwright.config.js";
+import {loadLaunchesData} from "./models/launches.model.js";
 
 const PORT = process.env.PORT || 8000
-const envPath = getEnvPath(pathsEnv)
+export const envPath = getEnvPath(pathsEnv)
 
 dotenv.config({path: envPath})
 
@@ -29,4 +30,5 @@ server.listen(PORT, async () => {
         })
     console.log(`Server running at port: ${PORT}`)
     console.log(`Server PID: ${process.pid}`)
+    await loadLaunchesData()
 })
