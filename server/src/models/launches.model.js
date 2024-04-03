@@ -68,12 +68,17 @@ export const getAllLaunches = async () => {
     return LaunchModel.find({}, {'__v': 0})
 }
 
-export const loadLaunchesData = async () => {
+const findLaunch = async (filter) => {
+    return LaunchModel.findOne(filter)
+}
+
+const populateLaunches = async () => {
     console.log('Downloading launch data...')
     const URL = process.env.SPACEX_URL + spaceXUrlPaths.launches.queryLaunches
     const response = await axios.post(URL, {
         query: {},
         options: {
+            pagination: false,
             populate: [
                 {
                     path: "rocket",
@@ -94,6 +99,7 @@ export const loadLaunchesData = async () => {
             console.log(e.message)
         })
 
+
     for (const doc of response.data.docs) {
         const customers = doc.payloads.flatMap((payload) => {
             return payload.customers
@@ -109,5 +115,23 @@ export const loadLaunchesData = async () => {
         }
 
         console.log(launch)
+
+        // TODO - populate data
     }
+}
+
+export const loadLaunchesData = async () => {
+    const firstLaunch = await findLaunch({
+        flightNumber: 1,
+        rocket: "Falcon 1",
+        mission: "FalconSat"
+    })
+
+    if (firstLaunch) {
+        console.log('Launch data already loaded....')
+    } else {
+        await populateLaunches()
+    }
+
+
 }
