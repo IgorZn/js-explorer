@@ -11,15 +11,23 @@ const DEFAULT_FLIGHT_NUMBER = 100
 
 dotenv.config({path: envPath})
 
-// export const addNewLaunch = (launch) => {
-//     latestFlightNumber++
-//     launches.set(latestFlightNumber, Object.assign(launch, {
-//         customer: ['Zero to Mastery', 'SASA'],
-//         upcoming: true,
-//         success: true,
-//         flightNumber: latestFlightNumber
-//     }))
-// }
+export const addNewLaunch = async (launch) => {
+    const planet = await PlanetModel.findOneAndUpdate({
+        keplerName: launch.target
+    })
+
+    if (!planet) {
+        throw new Error('No matching planet found')
+    }
+
+    const latestFlightNumber = getLatestFlightNumber()
+    launches.set(latestFlightNumber, Object.assign(launch, {
+        customer: ['Zero to Mastery', 'SASA'],
+        upcoming: true,
+        success: true,
+        flightNumber: latestFlightNumber
+    }))
+}
 
 const getLatestFlightNumber = async () => {
     const flightNumber = await LaunchModel
@@ -31,14 +39,6 @@ const getLatestFlightNumber = async () => {
 
 export const saveLaunch = async (launch) => {
     launch.flightNumber = await getLatestFlightNumber()
-
-    const planet = await PlanetModel.findOneAndUpdate({
-        keplerName: launch.target
-    })
-
-    if (!planet) {
-        throw new Error('No matching planet found')
-    }
 
     return LaunchModel.findOneAndUpdate({
         flightNumber: launch.flightNumber
@@ -96,9 +96,9 @@ const populateLaunches = async () => {
         }
     })
         .catch(e => {
+            console.log('Downloading data ERR')
             console.log(e.message)
         })
-
 
     for (const doc of response.data.docs) {
         const customers = doc.payloads.flatMap((payload) => {
@@ -109,14 +109,13 @@ const populateLaunches = async () => {
             launchDate: doc.date_local,
             upcoming: doc.upcoming,
             success: doc.success,
+            mission: doc.name,
             flightNumber: doc.flight_number,
             rocket: doc.rocket.name,
             customers
         }
 
-        console.log(launch)
-
-        // TODO - populate data
+        await saveLaunch(launch)
     }
 }
 
