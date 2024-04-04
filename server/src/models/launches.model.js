@@ -75,6 +75,7 @@ export const getAllLaunches = async (req, res) => {
     const {page, limit} = getPagination(req)
 
     return LaunchModel.find({}, {'__v': 0})
+        .sort('flightNumber')
         .skip((page * limit) - limit)
         .limit(limit)
 }
