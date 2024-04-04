@@ -7,7 +7,7 @@ import {
 import { validate, ajv } from "../../schemas/launches.schema.js";
 
 export const httpGetAllLaunches = async (req, res) => {
-    return res.status(200).json(await getAllLaunches())
+    return res.status(200).json(await getAllLaunches(req, res))
 }
 
 export const httpAddNewLaunches = async (req, res) => {

@@ -64,8 +64,19 @@ export const abortLaunchById = (id) => {
 
 }
 
-export const getAllLaunches = async () => {
+const getPagination = (req) => {
+    const page = Math.abs(req.query.page) || 1
+    const limit = Math.abs(req.query.limit) || 0
+
+    return {page, limit}
+}
+
+export const getAllLaunches = async (req, res) => {
+    const {page, limit} = getPagination(req)
+
     return LaunchModel.find({}, {'__v': 0})
+        .skip((page * limit) - limit)
+        .limit(limit)
 }
 
 const findLaunch = async (filter) => {
