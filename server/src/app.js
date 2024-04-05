@@ -1,6 +1,7 @@
 import * as path from "path";
 import { fileURLToPath } from 'node:url';
 
+import helmet from "helmet"
 import express from "express";
 import cors from "cors"
 import morgan from "morgan";
@@ -9,6 +10,9 @@ import {v1api} from "./routes/api.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const app = express()
+
+// Security
+app.use(helmet())
 
 // Logging
 app.use(morgan('combined'))

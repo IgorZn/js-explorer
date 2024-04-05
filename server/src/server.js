@@ -1,7 +1,17 @@
-import http from "http"
-import app from "./app.js";
+import fs from "node:fs"
+import path from "node:path";
+import https from "https"
+
 import mongoose from "mongoose";
 import dotenv from "dotenv"
+import app from "./app.js";
+
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 import {getEnvPath, pathsEnv} from "../playwright.config.js";
 import {loadLaunchesData} from "./models/launches.model.js";
 
@@ -10,7 +20,12 @@ export const envPath = getEnvPath(pathsEnv)
 
 dotenv.config({path: envPath})
 
-const server = http.createServer(app)
+// Security
+const options = {
+    key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pm')),
+}
+const server = https.createServer(options, app)
 // await loadPlanetsData()
 
 const mongooseOptions = {
