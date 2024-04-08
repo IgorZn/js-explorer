@@ -7,3 +7,4 @@ export const v1api = express.Router()
 // Routers
 v1api.use('/planets', planetsRouter)
 v1api.use('/launches',launchesRoute)
+v1api.use('/secret')
